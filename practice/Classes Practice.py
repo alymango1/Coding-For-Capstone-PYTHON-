@@ -8,8 +8,6 @@ class Students():
     def __str__(self):
         return self.name
 
-
-
 class Course():
     def __init__(self, name, max_students):
         self.name_course = name

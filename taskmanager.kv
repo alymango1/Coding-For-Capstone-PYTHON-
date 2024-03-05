@@ -1,0 +1,103 @@
+MDFloatLayout:
+    padding: 40
+    spacing: 20
+
+    MDLabel:
+        id: task_label
+        halign: "center"
+        markup: True
+        text: "[b][size=40]Task Manager[/size][/b]"
+        pos_hint: {"y": 0.4}
+
+    MDBoxLayout:
+        size_hint: 1, 0.95
+        ScrollView:
+            pos_hint: {"center_y": 0.5, "center_x": 0.5}
+            size_hint: 0.9, 0.8
+            MDList:
+                id: container
+
+    MDFloatingActionButton:
+        icon: "plus-thick"
+        pos_hint: {"center_x": 0.5, "center_y": 0.1}
+        elevation_normal: 12
+        on_release: app.show_task()
+
+<DialogContent>:
+    orientation: "vertical"
+    size_hint: 1, None
+    height: 150
+
+    GridLayout:
+        rows: 1
+
+        MDTextField:
+            id: task_text
+            hint_text: "Add Task Here..."
+            pos_hint: {"center_y": 0.5}
+            max_text_length: 50
+            on_text_validate: (app.add_task(task_text, date_text.text), app.close_dialog())
+
+
+        MDIconButton:
+            icon: "calendar"
+            pos_hint: {"center_y": 0.5,"center_x": 0.5}
+            on_release: root.show_date_picker()
+            padding: 10
+
+    MDLabel:
+        id: date_text
+        padding: 10
+
+
+    BoxLayout:
+        orientation: "horizontal"
+        pos_hint: {"center_x": 0.5}
+        padding: 10
+        spacing: 20
+
+        MDRaisedButton:
+            text: "SAVE"
+            on_release: (app.add_task(task_text, date_text.text), app.close_dialog())
+
+        MDFlatButton:
+            text: "CANCEL"
+            on_release: app.close_dialog()
+
+<ListWithItem>:
+    id: item
+    markup: True
+
+    LeftCheckbox:
+        id: check
+        on_release: app.confirm_finish()
+
+
+    IconRightWidget:
+        icon: "trash-can-outline"
+        on_release: root.remove_item(item)
+
+<Confirmation>:
+    orientation: "vertical"
+    size_hint: 1, None
+    height: 80
+
+    MDLabel:
+        text: "This task would be moved"
+        theme_text_color: "Secondary"
+        font_size: 15
+    BoxLayout:
+        orientation: "horizontal"
+        pos_hint: {"center_x": 0.8}
+        size_hint: None, None
+        size: self.minimum_size
+        padding: 10
+        spacing: 5
+
+        MDFlatButton:
+            text: "Yes"
+            on_release: root.yes_choice()
+
+        MDFlatButton:
+            text: "No"
+            on_release: root.no_choice()
